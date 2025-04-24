@@ -1,0 +1,32 @@
+create table profiles (
+  id uuid references auth.users not null primary key,
+  updated_at timestamp with time zone,
+  username text,
+  email text,
+  is_admin boolean not null default false,
+
+  constraint username_length check (char_length(username) >= 3)
+);
+-- Set up Row Level Security (RLS)
+-- See https://supabase.com/docs/guides/database/postgres/row-level-security for more details.
+alter table profiles
+  enable row level security;
+
+create policy "Public profiles are viewable by everyone." on profiles
+  for select using (true);
+
+create policy "Users can insert their own profile."
+  on profiles
+  for insert
+  to authenticated
+  with check (
+    (select auth.uid()) = id
+  );
+
+create policy "Users can update own profile."
+  on profiles
+  for update
+  to authenticated
+  using (
+    (select auth.uid()) = id
+  );

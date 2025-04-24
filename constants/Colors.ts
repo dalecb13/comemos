@@ -1,26 +1,20 @@
-/**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
- */
+export const REDWOOD = '#A63D40';
+export const EGGSHELL = '#FAF3DD';
+export const ZOMP = '#629677';
+export const LICORICE = '#22181C';
+export const DEEP_SKY_BLUE = '#2EC0F9'; // link color
 
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
+// secondary colors
+export const ASH_GRAY = '#A9C7B5'; // light shade of ZOMP
 
-export const Colors = {
-  light: {
-    text: '#11181C',
-    background: '#fff',
-    tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
-    tabIconSelected: tintColorLight,
-  },
-  dark: {
-    text: '#ECEDEE',
-    background: '#151718',
-    tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
-    tabIconSelected: tintColorDark,
-  },
-};
+// tertiary colors
+export const AAAAAA = '#AAAAAA';
+export const BBBBBB = '#BBBBBB';
+export const CCCCCC = '#CCCCCC';
+export const DDDDDD = '#DDDDDD';
+export const EEEEEE = '#EEEEEE';
+
+export const PRIMARY_COLOR = ZOMP;
+export const WHITE = EGGSHELL;
+
+export const BACKDROP_COLOR = 'rbga(0, 0, 0, 0.7)';
