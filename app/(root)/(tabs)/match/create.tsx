@@ -173,19 +173,14 @@ export default function CreateMatchPage() {
           zoomEnabled={true}
           onLongPress={handleLongPress}
         >
-          {/* <View style={localStyles.buttonContainer}>
-            <Button
-              color="white"
-              onPress={handleOpenCreateMatchForm}
-              title="Find Restaurant"
-            />
-          </View> */}
           <View style={localStyles.buttonContainer}>
-            <Button
-              color="white"
-              onPress={handleOpenCreateMatchForm}
-              title="Find Restaurant in Map"
-            />
+            <View style={localStyles.circleButton}>
+              <Button
+                color="white"
+                onPress={handleOpenCreateMatchForm}
+                title="Find Restaurant in Map"
+              />
+            </View>
           </View>
         </MapView>
       </SafeAreaView>
@@ -377,13 +372,18 @@ const localStyles = StyleSheet.create({
   },
   buttonContainer: {
     position: 'absolute',
-    width: 300,
+    // width: 300,
     bottom: 64,
     display: 'flex',
-    padding: 8,
-    backgroundColor: PRIMARY_COLOR,
-    borderRadius: 16,
-    alignSelf: 'center',
+    // padding: 8,
+    // backgroundColor: PRIMARY_COLOR,
+    // borderRadius: 16,
+    // alignSelf: 'center',
+  },
+  circleButton: {
+    height: 32,
+    width: 32,
+    borderRadius: 'full',
   },
   button: {
     width: '100%',
