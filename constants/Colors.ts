@@ -6,6 +6,7 @@ export const DEEP_SKY_BLUE = '#2EC0F9'; // link color
 
 // secondary colors
 export const ASH_GRAY = '#A9C7B5'; // light shade of ZOMP
+export const ASH_GRAY_TRANSPARENT = 'rgba(169, 199, 181, 0.7)';
 
 // tertiary colors
 export const AAAAAA = '#AAAAAA';
