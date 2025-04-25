@@ -27,7 +27,7 @@ const AuthApi = {
       console.warn('Error signing in', error)
       alert("Error signing in: " + error.message);
     } else {
-      router.replace("/(root)/(tabs)/match");
+      router.replace("/(root)/(tabs)/games");
     }
   },
 }
