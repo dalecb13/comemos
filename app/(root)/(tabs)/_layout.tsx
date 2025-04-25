@@ -23,9 +23,17 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="rooms/index"
+        name="groups/index"
         options={{
-          title: 'Rooms',
+          title: 'Groups',
+          tabBarIcon: ({ color }) => <FontAwesome6 name="people-group" size={ICON_SIZE} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="groups/create"
+        options={{
+          href: null,
+          title: 'Groups',
           tabBarIcon: ({ color }) => <FontAwesome6 name="people-group" size={ICON_SIZE} color={color} />,
         }}
       />

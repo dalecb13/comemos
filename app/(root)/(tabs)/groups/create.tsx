@@ -1,12 +1,11 @@
 import globalStyles from "@/lib/styles";
-import { StyleSheet, Text, View } from "react-native";
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 
-export default function RoomsHome() {
+export default function CreateGroupPage() {
   return (
     <SafeAreaView style={globalStyles.safeAreaStyle}>
       <View style={localStyles.mainView}>
-        <Text style={globalStyles.title}>Rooms</Text>
+        <Text style={globalStyles.title}>Create Group</Text>
       </View>
     </SafeAreaView>
   );
