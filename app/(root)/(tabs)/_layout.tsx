@@ -15,6 +15,14 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="games/create"
+        options={{
+          href: null,
+          title: 'Games',
+          tabBarIcon: ({ color }) => <FontAwesome6 name="gamepad" size={ICON_SIZE} color={color} />,
+        }}
+      />
+      <Tabs.Screen
         name="rooms/index"
         options={{
           title: 'Rooms',
