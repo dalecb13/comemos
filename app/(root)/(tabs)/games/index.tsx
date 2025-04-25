@@ -16,6 +16,7 @@ export default function MatchHome() {
   const [ activeMatches, setActiveMatches ] = useState<MatchModel[]>([]);
 
   useEffect(() => {
+
     const fetchMatchGames = async () => {
       const fetchedGames: MatchModel[] = await MatchApi.getAllMatches();
 
@@ -37,7 +38,7 @@ export default function MatchHome() {
               <Ionicons name="fast-food-outline" size={64} />
               <Link
                 style={globalStyles.primaryButton}
-                href="/(root)/(tabs)/match/create"
+                href="/(root)/(tabs)/games/create"
               >
                 Create one?
               </Link>
