@@ -1,8 +1,7 @@
 import CountryApi from "@/api/country.api";
 import GameApi from "@/api/game.api";
-import MatchApi from "@/api/match.api";
 import RestaurantApi from "@/api/restaurant.api";
-import { AAAAAA, ASH_GRAY, BACKDROP_COLOR, PRIMARY_COLOR, REDWOOD, ZOMP } from "@/constants/colors";
+import { AAAAAA, ASH_GRAY, ASH_GRAY_TRANSPARENT, BACKDROP_COLOR, REDWOOD, WHITE, ZOMP } from "@/constants/colors";
 import { calculateRegion } from "@/lib/location";
 import globalStyles from "@/lib/styles";
 import { CountryModel } from "@/models/country.model";
@@ -12,7 +11,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useLocales } from "expo-localization";
 import React, { useEffect, useRef, useState } from "react";
 import { Button, Modal, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
-import MapView, { LatLng, LongPressEvent, PROVIDER_DEFAULT } from "react-native-maps";
+import MapView, { LatLng, LongPressEvent, Polygon, PROVIDER_DEFAULT } from "react-native-maps";
 // import { CityModel, CountryModel } from "../../../../models/location.model";
 // import { getCities, getCountries } from "../../../../api/location.api";
 // import { FriendModel } from "models/friend.model";
@@ -48,6 +47,7 @@ type CountryPickerOption = CountryModel & PickerOption;
 // }
 
 export default function CreateMatchPage() {
+  console.log('[CreateMatchPage]');
   const locales = useLocales();
   const mapRef = useRef<MapView>(null);
   const [ showMatchForm, setShowMatchForm ] = useState<boolean>(false);
@@ -64,6 +64,7 @@ export default function CreateMatchPage() {
     setShowMatchForm(true);
   }
 
+  const [enableDraw, setEnableDraw] = useState<boolean>(false);
   const [ boundingPolygon, setBoundingPolygon ] = useState<LatLng[]>([]);
 
   const [ countries, setCountries ] = useState<CountryPickerOption[]>([]);
@@ -126,10 +127,13 @@ export default function CreateMatchPage() {
   }
 
   const handleLongPress = (longPressEvent: LongPressEvent) => {
-    console.log('handleLongPress', longPressEvent);
-    const pressedCoords = longPressEvent.nativeEvent.coordinate;
-    const updatedCoords: LatLng[] = [...boundingPolygon];
-    updatedCoords.push(pressedCoords);
+    if (enableDraw) {
+      // console.log('handleLongPress', longPressEvent);
+      const pressedCoords = longPressEvent.nativeEvent.coordinate;
+      const updatedCoords: LatLng[] = [...boundingPolygon];
+      updatedCoords.push(pressedCoords);
+      setBoundingPolygon(updatedCoords);
+    }
   }
 
   const handleFetchRestaurants = async () => {
@@ -156,6 +160,14 @@ export default function CreateMatchPage() {
     await RestaurantApi.getRestaurants(region, compositeAddress, locale);
   }
 
+  const handlePressDraw = () => {
+    setEnableDraw(true);
+  }
+
+  const handlePressArea = () => {
+    setEnableDraw(false);
+  }
+
   return (
     <>
       <SafeAreaView style={globalStyles.safeAreaStyle}>
@@ -173,16 +185,41 @@ export default function CreateMatchPage() {
           zoomEnabled={true}
           onLongPress={handleLongPress}
         >
-          <View style={localStyles.buttonContainer}>
-            <View style={localStyles.circleButton}>
-              <Button
-                color="white"
-                onPress={handleOpenCreateMatchForm}
-                title="Find Restaurant in Map"
+          {
+            enableDraw &&
+              <Polygon
+                coordinates={boundingPolygon}
+                strokeColor={ASH_GRAY}
+                fillColor={ASH_GRAY_TRANSPARENT}
+                strokeWidth={1}
               />
-            </View>
-          </View>
+          }
         </MapView>
+        <View style={localStyles.buttonContainer}>
+          <Pressable onPress={handlePressArea}>
+            <View style={[localStyles.circleButton, enableDraw ? localStyles.inactiveIconButton : localStyles.activeIconButton]}>
+              {/* <Ionicons name="scan" style={localStyles.iconButtonIcon} size={32} /> */}
+              <Ionicons name="scan" size={32} />
+            </View>
+          </Pressable>
+          <Pressable onPress={handlePressDraw}>
+            <View style={[localStyles.circleButton, enableDraw ? localStyles.activeIconButton : localStyles.inactiveIconButton]}>
+              {/* <Ionicons name="pencil" style={localStyles.iconButtonIcon} size={32} /> */}
+              <Ionicons name="pencil" size={32} />
+            </View>
+          </Pressable>
+          <Pressable onPress={() => setShowMatchForm(true)}>
+            <View style={[localStyles.circleButton, localStyles.inactiveIconButton]}>
+              {/* <Ionicons name="search" style={localStyles.iconButtonIcon} size={32} /> */}
+              <Ionicons name="search" size={32} />
+            </View>
+          </Pressable>
+        </View>
+        {
+          enableDraw === false && <View style={localStyles.rectangleSelectionContainer}>
+
+          </View>
+        }
       </SafeAreaView>
       {/* <SafeAreaView style={modalStyles.modalContainer}> */}
         <Modal
@@ -372,18 +409,35 @@ const localStyles = StyleSheet.create({
   },
   buttonContainer: {
     position: 'absolute',
-    // width: 300,
-    bottom: 64,
+    bottom: 48,
+    right: 16,
     display: 'flex',
-    // padding: 8,
-    // backgroundColor: PRIMARY_COLOR,
-    // borderRadius: 16,
-    // alignSelf: 'center',
+    flexDirection: 'column',
+    gap: 8,
   },
   circleButton: {
-    height: 32,
-    width: 32,
-    borderRadius: 'full',
+    height: 64,
+    width: 64,
+    borderRadius: 100,
+    padding: 8,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  inactiveIconButton: {
+    color: WHITE,
+    backgroundColor: ASH_GRAY,
+  },
+  activeIconButton: {
+    backgroundColor: ZOMP,
+  },
+  iconButtonIcon: {
+    backgroundColor: ZOMP,
+  },
+  rectangleSelectionContainer: {
+    position: 'absolute',
+    borderWidth: 1,
+    borderColor: ZOMP,
   },
   button: {
     width: '100%',
