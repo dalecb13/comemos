@@ -3,6 +3,9 @@ create table profiles (
   updated_at timestamp with time zone,
   username text,
   email text,
+  first_name text,
+  last_name text,
+  avatar_url text,
   is_admin boolean not null default false,
 
   constraint username_length check (char_length(username) >= 3)
@@ -30,3 +33,42 @@ create policy "Users can update own profile."
   using (
     (select auth.uid()) = id
   );
+
+-- This trigger automatically creates a profile entry when a new user
+-- signs up via Supabase Auth.
+-- See https://supabase.com/docs/guides/auth/managing-user-data#using-triggers
+-- for more details.
+create function public.handle_new_user()
+returns trigger set search_path = ''
+as $$
+begin
+  insert into public.profiles (id, first_name, last_name, avatar_url)
+  values (new.id, new.raw_user_meta_data->>'first_name', new.raw_user_meta_data->>'last_name', new.raw_user_meta_data->>'avatar_url');
+  return new;
+end;
+$$ language plpgsql security definer;
+
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute procedure public.handle_new_user();
+  
+-- Set up Storage!
+insert into storage.buckets (id, name)
+  values ('avatars', 'avatars');
+  
+  -- Set up access controls for storage.
+  -- See https://supabase.com/docs/guides/storage/security/access-control#policy-examples for more details.
+  create policy "Avatar images are publicly accessible."
+    on storage.objects
+    for select using (bucket_id = 'avatars');
+    
+  create policy "Anyone can upload an avatar."
+    on storage.objects
+    for insert
+    with check (bucket_id = 'avatars');
+    
+  create policy "Anyone can update their own avatar."
+    on storage.objects
+    for update
+    using ((select auth.uid()) = owner)
+    with check (bucket_id = 'avatars');

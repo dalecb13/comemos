@@ -19,7 +19,7 @@ const AuthApi = {
   },
 
   signIn: async (email: string, password: string) => {
-    const { error } = await supabase
+    const { data, error } = await supabase
       .auth
       .signInWithPassword({ email, password });
 
@@ -27,8 +27,10 @@ const AuthApi = {
       console.warn('Error signing in', error)
       alert("Error signing in: " + error.message);
     } else {
-      router.replace("/(root)/(tabs)/games");
+      // router.replace("/(root)/(tabs)/games");
     }
+
+    return data;
   },
 }
 

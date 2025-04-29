@@ -14,8 +14,9 @@ export const BBBBBB = '#BBBBBB';
 export const CCCCCC = '#CCCCCC';
 export const DDDDDD = '#DDDDDD';
 export const EEEEEE = '#EEEEEE';
+export const OFFWHITE = '#FAF9F6';
 
 export const PRIMARY_COLOR = ZOMP;
-export const WHITE = EGGSHELL;
+export const WHITE = OFFWHITE;
 
 export const BACKDROP_COLOR = 'rbga(0, 0, 0, 0.7)';

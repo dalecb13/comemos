@@ -16,7 +16,6 @@ export default function MatchHome() {
   const [ activeMatches, setActiveMatches ] = useState<MatchModel[]>([]);
 
   useEffect(() => {
-
     const fetchMatchGames = async () => {
       const fetchedGames: MatchModel[] = await MatchApi.getAllMatches();
 

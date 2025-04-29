@@ -1,4 +1,3 @@
-
 import { ASH_GRAY, DEEP_SKY_BLUE, PRIMARY_COLOR, WHITE } from "@/constants/colors";
 import { StyleSheet } from "react-native";
 

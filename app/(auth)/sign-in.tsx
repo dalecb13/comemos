@@ -2,14 +2,15 @@ import { Link } from 'expo-router'
 import { Text, TextInput, Button, StyleSheet, View, SafeAreaView } from 'react-native'
 import React from 'react'
 import globalStyles from '@/lib/styles';
-import AuthApi from '@/api/auth.api';
+import { useSession } from '@/contexts/auth.context';
 
 export default function Page() {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const { signIn } = useSession();
 
   const onSignInPress = async () => {
-    await AuthApi.signIn(email, password);
+    await signIn(email, password);
   }
 
   return (
