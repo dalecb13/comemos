@@ -29,6 +29,11 @@ const globalStyles = StyleSheet.create({
     backgroundColor: PRIMARY_COLOR,
     color: WHITE,
   },
+  floatingActionButtonContainer: {
+    position: 'absolute',
+    bottom: 16,
+    right: 16,
+  }
 });
 
 export default globalStyles;
