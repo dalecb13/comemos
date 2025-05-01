@@ -1,4 +1,4 @@
-import { ASH_GRAY, DEEP_SKY_BLUE, PRIMARY_COLOR, WHITE } from "@/constants/colors";
+import { ASH_GRAY, DEEP_SKY_BLUE, PRIMARY_COLOR, PRIMARY_COLOR_ACTIONS, WHITE } from "@/constants/colors";
 import { StyleSheet } from "react-native";
 
 const globalStyles = StyleSheet.create({
@@ -26,13 +26,23 @@ const globalStyles = StyleSheet.create({
   primaryButton: {
     padding: 16,
     borderRadius: 8,
-    backgroundColor: PRIMARY_COLOR,
+    backgroundColor: PRIMARY_COLOR_ACTIONS,
     color: WHITE,
   },
   floatingActionButtonContainer: {
     position: 'absolute',
     bottom: 16,
     right: 16,
+  },
+  primaryColorBackground: {
+    backgroundColor: PRIMARY_COLOR,
+  },
+  primaryColorTransparentBackground: {
+    backgroundColor: PRIMARY_COLOR,
+    opacity: 0.7,
+  },
+  secondaryColorBackground: {
+    backgroundColor: ASH_GRAY,
   }
 });
 

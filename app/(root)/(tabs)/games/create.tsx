@@ -1,16 +1,16 @@
 import CountryApi from "@/api/country.api";
 import GameApi from "@/api/game.api";
 import RestaurantApi from "@/api/restaurant.api";
-import { AAAAAA, ASH_GRAY, ASH_GRAY_TRANSPARENT, BACKDROP_COLOR, REDWOOD, WHITE, ZOMP } from "@/constants/colors";
+import { AAAAAA, ASH_GRAY, ASH_GRAY_TRANSPARENT, BACKDROP_COLOR, CCCCCC, EEEEEE, REDWOOD, WHITE, ZOMP } from "@/constants/colors";
 import { calculateRegion } from "@/lib/location";
 import globalStyles from "@/lib/styles";
 import { CountryModel } from "@/models/country.model";
 import { CreateGameModel } from "@/models/create-game.model";
 import { useLocationStore } from "@/store/use-location-store";
-import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { useLocales } from "expo-localization";
 import React, { useEffect, useRef, useState } from "react";
-import { Button, Modal, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { Modal, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import MapView, { LatLng, LongPressEvent, Polygon, PROVIDER_DEFAULT } from "react-native-maps";
 // import { CityModel, CountryModel } from "../../../../models/location.model";
 // import { getCities, getCountries } from "../../../../api/location.api";
@@ -197,21 +197,18 @@ export default function CreateMatchPage() {
         </MapView>
         <View style={localStyles.buttonContainer}>
           <Pressable onPress={handlePressArea}>
-            <View style={[localStyles.circleButton, enableDraw ? localStyles.inactiveIconButton : localStyles.activeIconButton]}>
-              {/* <Ionicons name="scan" style={localStyles.iconButtonIcon} size={32} /> */}
-              <Ionicons name="scan" size={32} />
+            <View style={[ localStyles.circleButton, enableDraw ? localStyles.inactiveIconButton : localStyles.activeIconButton ]}>
+              <Ionicons name="scan" size={24} />
             </View>
           </Pressable>
           <Pressable onPress={handlePressDraw}>
-            <View style={[localStyles.circleButton, enableDraw ? localStyles.activeIconButton : localStyles.inactiveIconButton]}>
-              {/* <Ionicons name="pencil" style={localStyles.iconButtonIcon} size={32} /> */}
-              <Ionicons name="pencil" size={32} />
+            <View style={[ localStyles.circleButton, enableDraw ? localStyles.activeIconButton : localStyles.inactiveIconButton ]}>
+              <Ionicons name="pencil" size={24} />
             </View>
           </Pressable>
-          <Pressable onPress={() => setShowMatchForm(true)}>
-            <View style={[localStyles.circleButton, localStyles.inactiveIconButton]}>
-              {/* <Ionicons name="search" style={localStyles.iconButtonIcon} size={32} /> */}
-              <Ionicons name="search" size={32} />
+          <Pressable onPress={() => handleOpenCreateMatchForm()}>
+            <View style={localStyles.circleButton}>
+              <FontAwesome6 name="plus" size={24} />
             </View>
           </Pressable>
         </View>
@@ -357,50 +354,6 @@ export default function CreateMatchPage() {
   )
 }
 
-const styles = StyleSheet.create({
-  titleText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  container: {
-    backgroundColor: 'white',
-    padding: 16,
-  },
-  dropdown: {
-    height: 50,
-    borderColor: 'gray',
-    borderWidth: 0.5,
-    borderRadius: 8,
-    paddingHorizontal: 8,
-  },
-  icon: {
-    marginRight: 5,
-  },
-  label: {
-    position: 'absolute',
-    backgroundColor: 'white',
-    left: 22,
-    top: 8,
-    zIndex: 999,
-    paddingHorizontal: 8,
-    fontSize: 14,
-  },
-  placeholderStyle: {
-    fontSize: 16,
-  },
-  selectedTextStyle: {
-    fontSize: 16,
-  },
-  iconStyle: {
-    width: 20,
-    height: 20,
-  },
-  inputSearchStyle: {
-    height: 40,
-    fontSize: 16,
-  },
-});
-
 const localStyles = StyleSheet.create({
   mapView: {
     // w-full h-full rounded-2xl
@@ -415,6 +368,14 @@ const localStyles = StyleSheet.create({
     flexDirection: 'column',
     gap: 8,
   },
+  fabMenu: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 8,
+  },
+  openMenuButton: {
+    backgroundColor: ZOMP,
+  },
   circleButton: {
     height: 64,
     width: 64,
@@ -425,11 +386,12 @@ const localStyles = StyleSheet.create({
     alignItems: 'center',
   },
   inactiveIconButton: {
-    color: WHITE,
-    backgroundColor: ASH_GRAY,
+    backgroundColor: CCCCCC,
   },
   activeIconButton: {
-    backgroundColor: ZOMP,
+    backgroundColor: AAAAAA,
+    borderWidth: 1,
+    borderColor: ZOMP,
   },
   iconButtonIcon: {
     backgroundColor: ZOMP,
@@ -490,6 +452,9 @@ const localStyles = StyleSheet.create({
     borderColor: AAAAAA,
     borderWidth: 1,
     color: AAAAAA,
+  },
+  closeColor: {
+    backgroundColor: REDWOOD,
   },
 });
 

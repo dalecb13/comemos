@@ -1,11 +1,12 @@
 import { Tabs } from 'expo-router';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import { PRIMARY_COLOR_ACTIONS } from '@/constants/colors';
 
 const ICON_SIZE = 24;
 
 export default function TabLayout() {
   return (
-    <Tabs screenOptions={{ tabBarActiveTintColor: 'blue' }}>
+    <Tabs screenOptions={{ tabBarActiveTintColor: PRIMARY_COLOR_ACTIONS }}>
       <Tabs.Screen
         name="games/index"
         options={{

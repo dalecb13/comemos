@@ -10,6 +10,7 @@ import { ASH_GRAY } from "@/constants/colors";
 
 const GroupList = observer(({ groups$ }: { groups$: typeof _groups$ }) => {
   const groups = groups$.get();
+  const router = useRouter();
 
   if (!groups || groups === undefined) {
     return <></>
@@ -20,8 +21,6 @@ const GroupList = observer(({ groups$ }: { groups$: typeof _groups$ }) => {
   if (groupsList.length === 0) {
     return <></>
   }
-
-  const router = useRouter();
 
   const handleNavigateToCreateGroup = () => {
     router.navigate('/(root)/(tabs)/groups/create');
