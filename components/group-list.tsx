@@ -1,12 +1,12 @@
 import globalStyles from "@/lib/styles";
 import { useRouter } from "expo-router";
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { observer } from "@legendapp/state/react";
 import Group from "@/components/group";
 import { groups$ as _groups$ } from '@/store/groups.store';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
-import { ASH_GRAY } from "@/constants/colors";
+import { ASH_GRAY, PRIMARY_COLOR_ACTIONS, WHITE } from "@/constants/colors";
 
 const GroupList = observer(({ groups$ }: { groups$: typeof _groups$ }) => {
   const groups = groups$.get();
@@ -38,14 +38,17 @@ const GroupList = observer(({ groups$ }: { groups$: typeof _groups$ }) => {
         }
       </View>
 
-      <View style={globalStyles.floatingActionButtonContainer}>
+      <Pressable
+        style={localStyles.createGroupButton}
+        onPress={handleNavigateToCreateGroup}
+      >
         <FontAwesome6
-          name="circle-plus"
-          size={48}
-          color={ASH_GRAY}
-          onPress={handleNavigateToCreateGroup}
+          name="plus"
+          size="16"
+          color={WHITE}
         />
-      </View>
+        <Text style={localStyles.createGroupButtonText}>Create Group</Text>
+      </Pressable>
     </View>
   );
 });
@@ -54,6 +57,8 @@ export default GroupList;
 
 const localStyles = StyleSheet.create({
   mainView: {
+    paddingLeft: 16,
+    paddingRight: 16,
     display: 'flex',
     height: '100%',
     width: '100%',
@@ -65,5 +70,21 @@ const localStyles = StyleSheet.create({
     flexDirection: 'column',
     gap: 8,
     margin: 16,
+  },
+  createGroupButton: {
+    backgroundColor: PRIMARY_COLOR_ACTIONS,
+    padding: 16,
+    borderRadius: 8,
+
+    width: '100%',
+
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 8,
+  },
+  createGroupButtonText: {
+    color: WHITE,
   }
 });
