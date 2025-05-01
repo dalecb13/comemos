@@ -1,5 +1,6 @@
 import { WHITE, ZOMP } from "@/constants/colors";
 import { FontAwesome6 } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 export default function Group({
@@ -9,6 +10,8 @@ export default function Group({
   group_name: string | null;
   group_description: string | null;
 }) {
+  const router = useRouter();
+
   const onNavigateGroupDetailsPress = () => {
 
   }
@@ -18,7 +21,7 @@ export default function Group({
   }
 
   const onCreateGamePress = () => {
-    
+    router.navigate('/(root)/(tabs)/games/create');
   }
 
   return (
