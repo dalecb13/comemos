@@ -100,6 +100,7 @@ export type Database = {
         Row: {
           created_at: string | null
           creator_id: string
+          deleted: boolean | null
           group_description: string | null
           group_name: string | null
           id: string
@@ -108,6 +109,7 @@ export type Database = {
         Insert: {
           created_at?: string | null
           creator_id: string
+          deleted?: boolean | null
           group_description?: string | null
           group_name?: string | null
           id?: string
@@ -116,6 +118,7 @@ export type Database = {
         Update: {
           created_at?: string | null
           creator_id?: string
+          deleted?: boolean | null
           group_description?: string | null
           group_name?: string | null
           id?: string
@@ -137,33 +140,42 @@ export type Database = {
           categories: string[] | null
           city: string | null
           country: string | null
-          createdat: string | null
+          created_at: string | null
           creator_id: string
+          deleted: boolean | null
+          group_id: string | null
           id: string
           locale: string | null
-          searchaddress: string | null
+          search_address: string | null
+          updated_at: string | null
         }
         Insert: {
           budget?: number | null
           categories?: string[] | null
           city?: string | null
           country?: string | null
-          createdat?: string | null
+          created_at?: string | null
           creator_id: string
+          deleted?: boolean | null
+          group_id?: string | null
           id?: string
           locale?: string | null
-          searchaddress?: string | null
+          search_address?: string | null
+          updated_at?: string | null
         }
         Update: {
           budget?: number | null
           categories?: string[] | null
           city?: string | null
           country?: string | null
-          createdat?: string | null
+          created_at?: string | null
           creator_id?: string
+          deleted?: boolean | null
+          group_id?: string | null
           id?: string
           locale?: string | null
-          searchaddress?: string | null
+          search_address?: string | null
+          updated_at?: string | null
         }
         Relationships: [
           {
@@ -173,27 +185,43 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "match_games_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "groups"
+            referencedColumns: ["id"]
+          },
         ]
       }
       profiles: {
         Row: {
+          avatar_url: string | null
           email: string | null
+          first_name: string | null
           id: string
           is_admin: boolean
+          last_name: string | null
           updated_at: string | null
           username: string | null
         }
         Insert: {
+          avatar_url?: string | null
           email?: string | null
+          first_name?: string | null
           id: string
           is_admin?: boolean
+          last_name?: string | null
           updated_at?: string | null
           username?: string | null
         }
         Update: {
+          avatar_url?: string | null
           email?: string | null
+          first_name?: string | null
           id?: string
           is_admin?: boolean
+          last_name?: string | null
           updated_at?: string | null
           username?: string | null
         }

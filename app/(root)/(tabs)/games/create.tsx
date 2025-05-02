@@ -1,7 +1,7 @@
 import CountryApi from "@/api/country.api";
 import GameApi from "@/api/game.api";
 import RestaurantApi from "@/api/restaurant.api";
-import { AAAAAA, ASH_GRAY, ASH_GRAY_TRANSPARENT, BACKDROP_COLOR, CCCCCC, CLEAR, EEEEEE, REDWOOD, WHITE, ZOMP } from "@/constants/colors";
+import { AAAAAA, ASH_GRAY, ASH_GRAY_TRANSPARENT, BACKDROP_COLOR, CCCCCC, CLEAR, REDWOOD, ZOMP } from "@/constants/colors";
 import { calculateRegion } from "@/lib/location";
 import globalStyles from "@/lib/styles";
 import { CountryModel } from "@/models/country.model";
@@ -37,16 +37,6 @@ type PickerOption = {
 }
 
 type CountryPickerOption = CountryModel & PickerOption;
-
-// function countryNameAZ( a: CountryModel, b: CountryModel ) {
-//   if ( a.countryName < b.countryName ){
-//     return -1;
-//   }
-//   if ( a.countryName > b.countryName ){
-//     return 1;
-//   }
-//   return 0;
-// }
 
 const CreateMatchPage = observer(() => {
   const drawState = mapDraw$.get();

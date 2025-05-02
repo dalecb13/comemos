@@ -1,4 +1,3 @@
-import globalStyles from "@/lib/styles";
 import { useRouter } from "expo-router";
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
@@ -6,7 +5,7 @@ import { observer } from "@legendapp/state/react";
 import Group from "@/components/group";
 import { groups$ as _groups$ } from '@/store/groups.store';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
-import { ASH_GRAY, PRIMARY_COLOR_ACTIONS, WHITE } from "@/constants/colors";
+import { PRIMARY_COLOR_ACTIONS, WHITE } from "@/constants/colors";
 
 const GroupList = observer(({ groups$ }: { groups$: typeof _groups$ }) => {
   const groups = groups$.get();

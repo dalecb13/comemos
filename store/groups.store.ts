@@ -5,7 +5,7 @@ export const groups$ = observable(
   customSynced({
     supabase,
     collection: 'groups',
-    select: (from) => from.select('id,group_name,group_description,creator_id,created_at,updated_at'),
+    select: (from) => from.select('id,group_name,group_description,creator_id,created_at,updated_at,deleted'),
     // filter: (select) => select.eq('user_id', supabase.auth.getUser()?.id),
     actions: ['read', 'create', 'update'],
     realtime: true,
