@@ -40,3 +40,7 @@ app-example
 
 # local confid
 .vscode
+
+# Native build files for CNG
+ios
+android

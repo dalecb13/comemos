@@ -1,12 +1,12 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs } from 'expo-router';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import { PRIMARY_COLOR_ACTIONS } from '@/constants/colors';
 
 const ICON_SIZE = 24;
 
 export default function TabLayout() {
   return (
-    <Tabs screenOptions={{ tabBarActiveTintColor: 'blue' }}>
+    <Tabs screenOptions={{ tabBarActiveTintColor: PRIMARY_COLOR_ACTIONS }}>
       <Tabs.Screen
         name="games/index"
         options={{
@@ -23,9 +23,17 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="rooms/index"
+        name="groups/index"
         options={{
-          title: 'Rooms',
+          title: 'Groups',
+          tabBarIcon: ({ color }) => <FontAwesome6 name="people-group" size={ICON_SIZE} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="groups/create"
+        options={{
+          href: null,
+          title: 'Groups',
           tabBarIcon: ({ color }) => <FontAwesome6 name="people-group" size={ICON_SIZE} color={color} />,
         }}
       />

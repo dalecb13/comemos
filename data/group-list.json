@@ -1,0 +1,107 @@
+{
+  "258d2c48-4551-4987-bfcd-5f312aba57fc": {
+    "creator_id": "e319292f-7956-4cd3-bad4-b0d9bef68cd6",
+    "group_description": "Only for me",
+    "group_name": "My First Group",
+    "id": "258d2c48-4551-4987-bfcd-5f312aba57fc"
+  },
+  "2821e4ee-47b6-476e-97b4-7bca8e143c62": {
+    "creator_id": "e319292f-7956-4cd3-bad4-b0d9bef68cd6",
+    "group_description": "Only for me",
+    "group_name": "My First Group",
+    "id": "2821e4ee-47b6-476e-97b4-7bca8e143c62"
+  },
+  "30c050a2-f5ad-4833-8158-bfe6767efd09": {
+    "creator_id": "e319292f-7956-4cd3-bad4-b0d9bef68cd6",
+    "group_description": "Only for me and no one else",
+    "group_name": "My First Group",
+    "id": "30c050a2-f5ad-4833-8158-bfe6767efd09"
+  },
+  "321e3e84-3aa5-4988-82e0-c7b139dce102": {
+    "creator_id": "e319292f-7956-4cd3-bad4-b0d9bef68cd6",
+    "group_description": "",
+    "group_name": "My First Group",
+    "id": "321e3e84-3aa5-4988-82e0-c7b139dce102"
+  },
+  "42849148-832d-4da7-b6e8-c2d13dba3fed": {
+    "creator_id": "e319292f-7956-4cd3-bad4-b0d9bef68cd6",
+    "group_description": "A group only for me",
+    "group_name": "My First Group",
+    "id": "42849148-832d-4da7-b6e8-c2d13dba3fed"
+  },
+  "4fee0a8c-e0c9-4115-aacd-3aee72e23416": {
+    "creator_id": "e319292f-7956-4cd3-bad4-b0d9bef68cd6",
+    "group_description": "A group for just myself",
+    "group_name": "Just Me",
+    "id": "4fee0a8c-e0c9-4115-aacd-3aee72e23416"
+  },
+  "69a8ee2d-2720-4bd8-b6f4-71383e74489c": {
+    "creator_id": "e319292f-7956-4cd3-bad4-b0d9bef68cd6",
+    "group_description": "Only for me",
+    "group_name": "My First Group",
+    "id": "69a8ee2d-2720-4bd8-b6f4-71383e74489c"
+  },
+  "786d2ca7-2592-47b1-80ed-d12e0aa6f827": {
+    "creator_id": "e319292f-7956-4cd3-bad4-b0d9bef68cd6",
+    "group_description": "",
+    "group_name": "My First Group",
+    "id": "786d2ca7-2592-47b1-80ed-d12e0aa6f827"
+  },
+  "79f3f060-45f9-4610-a9d1-d058be490e06": {
+    "creator_id": "e319292f-7956-4cd3-bad4-b0d9bef68cd6",
+    "group_description": "Only for me",
+    "group_name": "My First Group",
+    "id": "79f3f060-45f9-4610-a9d1-d058be490e06"
+  },
+  "7b29dc41-3047-49cb-94f7-bf3e4814f7c5": {
+    "created_at": "2025-04-29T19:17:12.797122+00:00",
+    "creator_id": "8f6b1dac-988d-47ac-9e00-6c4906815a41",
+    "deleted": false,
+    "group_description": "",
+    "group_name": "My first group",
+    "id": "7b29dc41-3047-49cb-94f7-bf3e4814f7c5",
+    "updated_at": "2025-04-29T19:17:12.797122+00:00"
+  },
+  "849e0e53-cfd4-4309-ad93-ad3106ebb1a7": {
+    "creator_id": "e319292f-7956-4cd3-bad4-b0d9bef68cd6",
+    "group_description": "Only for me",
+    "group_name": "My First Group",
+    "id": "849e0e53-cfd4-4309-ad93-ad3106ebb1a7"
+  },
+  "8b3745d9-cc30-4080-88b8-df168a573b05": {
+    "creator_id": "e319292f-7956-4cd3-bad4-b0d9bef68cd6",
+    "group_description": "Only for me",
+    "group_name": "My First Group",
+    "id": "8b3745d9-cc30-4080-88b8-df168a573b05"
+  },
+  "b281b636-3b54-4e78-ac92-217e2c745292": {
+    "creator_id": "e319292f-7956-4cd3-bad4-b0d9bef68cd6",
+    "group_description": "",
+    "group_name": "My First Group",
+    "id": "b281b636-3b54-4e78-ac92-217e2c745292"
+  },
+  "cd3d86c4-32b2-4cf6-9058-e30a593eb437": {
+    "creator_id": "e319292f-7956-4cd3-bad4-b0d9bef68cd6",
+    "group_description": "Only for me",
+    "group_name": "My First Group",
+    "id": "cd3d86c4-32b2-4cf6-9058-e30a593eb437"
+  },
+  "d1145d3a-24db-4b02-8cbe-0a92a23aa55f": {
+    "creator_id": "e319292f-7956-4cd3-bad4-b0d9bef68cd6",
+    "group_description": "Only for me",
+    "group_name": "My First Group",
+    "id": "d1145d3a-24db-4b02-8cbe-0a92a23aa55f"
+  },
+  "f105f117-96bd-40f0-8bdd-03e2dd452edb": {
+    "creator_id": "e319292f-7956-4cd3-bad4-b0d9bef68cd6",
+    "group_description": "Only for me",
+    "group_name": "My First Group",
+    "id": "f105f117-96bd-40f0-8bdd-03e2dd452edb"
+  },
+  "fd487ffb-f785-4022-8f75-fb94757586f4": {
+    "creator_id": "e319292f-7956-4cd3-bad4-b0d9bef68cd6",
+    "group_description": "",
+    "group_name": "My First Group",
+    "id": "fd487ffb-f785-4022-8f75-fb94757586f4"
+  }
+}
