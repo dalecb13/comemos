@@ -1,13 +1,15 @@
 import CountryApi from "@/api/country.api";
 import GameApi from "@/api/game.api";
 import RestaurantApi from "@/api/restaurant.api";
-import { AAAAAA, ASH_GRAY, ASH_GRAY_TRANSPARENT, BACKDROP_COLOR, CCCCCC, EEEEEE, REDWOOD, WHITE, ZOMP } from "@/constants/colors";
+import { AAAAAA, ASH_GRAY, ASH_GRAY_TRANSPARENT, BACKDROP_COLOR, CCCCCC, CLEAR, EEEEEE, REDWOOD, WHITE, ZOMP } from "@/constants/colors";
 import { calculateRegion } from "@/lib/location";
 import globalStyles from "@/lib/styles";
 import { CountryModel } from "@/models/country.model";
 import { CreateGameModel } from "@/models/create-game.model";
+import { DRAW_STATE, mapDraw$ } from "@/store/map-draw.state";
 import { useLocationStore } from "@/store/use-location-store";
 import { FontAwesome6, Ionicons } from "@expo/vector-icons";
+import { observer } from "@legendapp/state/react";
 import { useLocales } from "expo-localization";
 import React, { useEffect, useRef, useState } from "react";
 import { Modal, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
@@ -46,7 +48,9 @@ type CountryPickerOption = CountryModel & PickerOption;
 //   return 0;
 // }
 
-export default function CreateMatchPage() {
+const CreateMatchPage = observer(() => {
+  const drawState = mapDraw$.get();
+
   console.log('[CreateMatchPage]');
   const locales = useLocales();
   const mapRef = useRef<MapView>(null);
@@ -64,7 +68,6 @@ export default function CreateMatchPage() {
     setShowMatchForm(true);
   }
 
-  const [enableDraw, setEnableDraw] = useState<boolean>(false);
   const [ boundingPolygon, setBoundingPolygon ] = useState<LatLng[]>([]);
 
   const [ countries, setCountries ] = useState<CountryPickerOption[]>([]);
@@ -127,7 +130,7 @@ export default function CreateMatchPage() {
   }
 
   const handleLongPress = (longPressEvent: LongPressEvent) => {
-    if (enableDraw) {
+    if (drawState === 'polygon') {
       // console.log('handleLongPress', longPressEvent);
       const pressedCoords = longPressEvent.nativeEvent.coordinate;
       const updatedCoords: LatLng[] = [...boundingPolygon];
@@ -160,12 +163,8 @@ export default function CreateMatchPage() {
     await RestaurantApi.getRestaurants(region, compositeAddress, locale);
   }
 
-  const handlePressDraw = () => {
-    setEnableDraw(true);
-  }
-
-  const handlePressArea = () => {
-    setEnableDraw(false);
+  const handleChangeDrawState = (drawState: DRAW_STATE) => {
+    mapDraw$.set(drawState);
   }
 
   return (
@@ -185,174 +184,171 @@ export default function CreateMatchPage() {
           zoomEnabled={true}
           onLongPress={handleLongPress}
         >
-          {
-            enableDraw &&
-              <Polygon
-                coordinates={boundingPolygon}
-                strokeColor={ASH_GRAY}
-                fillColor={ASH_GRAY_TRANSPARENT}
-                strokeWidth={1}
-              />
-          }
+          <Polygon
+            coordinates={boundingPolygon}
+            strokeColor={drawState === 'polygon' ? ASH_GRAY : CLEAR}
+            fillColor={drawState === 'polygon' ? ASH_GRAY_TRANSPARENT : CLEAR}
+            strokeWidth={1}
+          />
         </MapView>
         <View style={localStyles.buttonContainer}>
-          <Pressable onPress={handlePressArea}>
-            <View style={[ localStyles.circleButton, enableDraw ? localStyles.inactiveIconButton : localStyles.activeIconButton ]}>
+          <Pressable onPress={() => handleChangeDrawState('rectangle')}>
+            <View style={[ localStyles.circleButton, drawState === 'rectangle' ? localStyles.activeIconButton : localStyles.inactiveIconButton ]}>
               <Ionicons name="scan" size={24} />
             </View>
           </Pressable>
-          <Pressable onPress={handlePressDraw}>
-            <View style={[ localStyles.circleButton, enableDraw ? localStyles.activeIconButton : localStyles.inactiveIconButton ]}>
+          <Pressable onPress={() => handleChangeDrawState('polygon')}>
+            <View style={[ localStyles.circleButton, drawState === 'polygon' ? localStyles.activeIconButton : localStyles.inactiveIconButton ]}>
               <Ionicons name="pencil" size={24} />
             </View>
           </Pressable>
           <Pressable onPress={() => handleOpenCreateMatchForm()}>
-            <View style={localStyles.circleButton}>
+            <View style={[ localStyles.circleButton, localStyles.createButton ]}>
               <FontAwesome6 name="plus" size={24} />
             </View>
           </Pressable>
         </View>
         {
-          enableDraw === false && <View style={localStyles.rectangleSelectionContainer}>
+          drawState === 'rectangle' && <View style={localStyles.rectangleSelectionContainer}>
 
           </View>
         }
       </SafeAreaView>
-      {/* <SafeAreaView style={modalStyles.modalContainer}> */}
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={showMatchForm}
-          onRequestClose={() => setShowMatchForm(false)}
-          onDismiss={() => setShowMatchForm(false)}
-        >
-          <View>
-            <Pressable>
-              {/* <FontAwesome6 name="x" iconStyle="solid" /> */}
-              <Ionicons name="close-outline" />
-            </Pressable>
-          </View>
-          <View style={modalStyles.modalView}>
-            <Text>Match Settings</Text>
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={showMatchForm}
+        onRequestClose={() => setShowMatchForm(false)}
+        onDismiss={() => setShowMatchForm(false)}
+      >
+        <View>
+          <Pressable>
+            {/* <FontAwesome6 name="x" iconStyle="solid" /> */}
+            <Ionicons name="close-outline" />
+          </Pressable>
+        </View>
+        <View style={modalStyles.modalView}>
+          <Text>Match Settings</Text>
 
-            <RNPickerSelect
-              items={countries}
-              onValueChange={handleChangeCountry}
+          <RNPickerSelect
+            items={countries}
+            onValueChange={handleChangeCountry}
+          />
+
+          {/* <Dropdown
+            style={[modalStyles.dropdown, isCountriesFocus && { borderColor: 'blue' }]}
+            placeholderStyle={modalStyles.placeholderStyle}
+            selectedTextStyle={modalStyles.selectedTextStyle}
+            inputSearchStyle={modalStyles.inputSearchStyle}
+            iconStyle={modalStyles.iconStyle}
+            data={countries}
+            search
+            maxHeight={300}
+            labelField="countryName"
+            valueField="id"
+            placeholder={!isCountriesFocus ? 'Country' : '...'}
+            searchPlaceholder="Search"
+            value={chosenCountryId}
+            onFocus={() => setIsCountriesFocus(true)}
+            onBlur={() => setIsCountriesFocus(false)}
+            onChange={handleChangeCountry}
+          /> */}
+
+          {/* {
+            chosenCountryId
+              ? <Dropdown
+                  style={[modalStyles.dropdown, isCitiesFocus && { borderColor: 'blue' }]}
+                  placeholderStyle={modalStyles.placeholderStyle}
+                  selectedTextStyle={modalStyles.selectedTextStyle}
+                  inputSearchStyle={modalStyles.inputSearchStyle}
+                  iconStyle={modalStyles.iconStyle}
+                  data={cities}
+                  search
+                  maxHeight={300}
+                  labelField="cityName"
+                  valueField="id"
+                  placeholder={!isCitiesFocus ? 'City' : '...'}
+                  searchPlaceholder="Search"
+                  value={chosenCityId}
+                  onFocus={() => setIsCitiesFocus(true)}
+                  onBlur={() => setIsCitiesFocus(false)}
+                  onChange={handleChangeCity}
+                />
+              : <Dropdown
+                  style={[modalStyles.dropdown, isCitiesFocus && { borderColor: 'blue' }]}
+                  placeholderStyle={modalStyles.placeholderStyle}
+                  selectedTextStyle={modalStyles.selectedTextStyle}
+                  inputSearchStyle={modalStyles.inputSearchStyle}
+                  iconStyle={modalStyles.iconStyle}
+                  data={cities}
+                  search
+                  maxHeight={300}
+                  labelField="cityName"
+                  valueField="id"
+                  placeholder={!isCitiesFocus ? 'City' : '...'}
+                  searchPlaceholder="Search"
+                  value={chosenCityId}
+                  onFocus={() => setIsCitiesFocus(true)}
+                  onBlur={() => setIsCitiesFocus(false)}
+                  onChange={handleChangeCity}
+                />
+          } */}
+
+          <View style={localStyles.textInputStyle}>
+            <TextInput
+              placeholder='Address'
+              value={address}
+              onChangeText={setAddress}
             />
+          </View>
 
-            {/* <Dropdown
-              style={[modalStyles.dropdown, isCountriesFocus && { borderColor: 'blue' }]}
-              placeholderStyle={modalStyles.placeholderStyle}
-              selectedTextStyle={modalStyles.selectedTextStyle}
-              inputSearchStyle={modalStyles.inputSearchStyle}
-              iconStyle={modalStyles.iconStyle}
-              data={countries}
-              search
-              maxHeight={300}
-              labelField="countryName"
-              valueField="id"
-              placeholder={!isCountriesFocus ? 'Country' : '...'}
-              searchPlaceholder="Search"
-              value={chosenCountryId}
-              onFocus={() => setIsCountriesFocus(true)}
-              onBlur={() => setIsCountriesFocus(false)}
-              onChange={handleChangeCountry}
-            /> */}
-
-            {/* {
-              chosenCountryId
-                ? <Dropdown
-                    style={[modalStyles.dropdown, isCitiesFocus && { borderColor: 'blue' }]}
-                    placeholderStyle={modalStyles.placeholderStyle}
-                    selectedTextStyle={modalStyles.selectedTextStyle}
-                    inputSearchStyle={modalStyles.inputSearchStyle}
-                    iconStyle={modalStyles.iconStyle}
-                    data={cities}
-                    search
-                    maxHeight={300}
-                    labelField="cityName"
-                    valueField="id"
-                    placeholder={!isCitiesFocus ? 'City' : '...'}
-                    searchPlaceholder="Search"
-                    value={chosenCityId}
-                    onFocus={() => setIsCitiesFocus(true)}
-                    onBlur={() => setIsCitiesFocus(false)}
-                    onChange={handleChangeCity}
-                  />
-                : <Dropdown
-                    style={[modalStyles.dropdown, isCitiesFocus && { borderColor: 'blue' }]}
-                    placeholderStyle={modalStyles.placeholderStyle}
-                    selectedTextStyle={modalStyles.selectedTextStyle}
-                    inputSearchStyle={modalStyles.inputSearchStyle}
-                    iconStyle={modalStyles.iconStyle}
-                    data={cities}
-                    search
-                    maxHeight={300}
-                    labelField="cityName"
-                    valueField="id"
-                    placeholder={!isCitiesFocus ? 'City' : '...'}
-                    searchPlaceholder="Search"
-                    value={chosenCityId}
-                    onFocus={() => setIsCitiesFocus(true)}
-                    onBlur={() => setIsCitiesFocus(false)}
-                    onChange={handleChangeCity}
-                  />
-            } */}
-
-            <View style={localStyles.textInputStyle}>
-              <TextInput
-                placeholder='Address'
-                value={address}
-                onChangeText={setAddress}
-              />
-            </View>
-
-            <View style={localStyles.buttonGroup}>
-              <Pressable
-                style={[localStyles.buttonGroupButton, localStyles.buttonGroupButtonLeft, budget === 1 ? localStyles.buttonGroupButtonChosen : null]}
-                onPress={() => setBudget(1)}
-              >
-                <Text style={localStyles.buttonText}>$</Text>
-              </Pressable>
-              <Pressable
-                style={[localStyles.buttonGroupButton, localStyles.buttonGroupButtonMiddle, budget === 2 ? localStyles.buttonGroupButtonChosen : null]}
-                onPress={() => setBudget(2)}
-              >
-                <Text style={localStyles.buttonText}>$$</Text>
-              </Pressable>
-              <Pressable
-                style={[localStyles.buttonGroupButton, localStyles.buttonGroupButtonMiddle, budget === 3 ? localStyles.buttonGroupButtonChosen : null]}
-                onPress={() => setBudget(3)}
-              >
-                <Text style={localStyles.buttonText}>$$$</Text>
-              </Pressable>
-              <Pressable
-                style={[localStyles.buttonGroupButton, localStyles.buttonGroupButtonRight, budget === 4 ? localStyles.buttonGroupButtonChosen : null]}
-                onPress={() => setBudget(4)}
-              >
-                <Text style={localStyles.buttonText}>$$$$</Text>
-              </Pressable>
-            </View>
-
+          <View style={localStyles.buttonGroup}>
             <Pressable
-              style={[modalStyles.button, modalStyles.buttonSubmit]}
-              onPress={handleCloseCreateMatchForm}
+              style={[localStyles.buttonGroupButton, localStyles.buttonGroupButtonLeft, budget === 1 ? localStyles.buttonGroupButtonChosen : null]}
+              onPress={() => setBudget(1)}
             >
-              <Text style={modalStyles.textStyle}>Start Matching!</Text>
+              <Text style={localStyles.buttonText}>$</Text>
             </Pressable>
-
             <Pressable
-              style={[modalStyles.button, modalStyles.buttonClose]}
-              onPress={handleCloseCreateMatchForm}
+              style={[localStyles.buttonGroupButton, localStyles.buttonGroupButtonMiddle, budget === 2 ? localStyles.buttonGroupButtonChosen : null]}
+              onPress={() => setBudget(2)}
             >
-              <Text style={modalStyles.textStyle}>Cancel!</Text>
+              <Text style={localStyles.buttonText}>$$</Text>
+            </Pressable>
+            <Pressable
+              style={[localStyles.buttonGroupButton, localStyles.buttonGroupButtonMiddle, budget === 3 ? localStyles.buttonGroupButtonChosen : null]}
+              onPress={() => setBudget(3)}
+            >
+              <Text style={localStyles.buttonText}>$$$</Text>
+            </Pressable>
+            <Pressable
+              style={[localStyles.buttonGroupButton, localStyles.buttonGroupButtonRight, budget === 4 ? localStyles.buttonGroupButtonChosen : null]}
+              onPress={() => setBudget(4)}
+            >
+              <Text style={localStyles.buttonText}>$$$$</Text>
             </Pressable>
           </View>
-        </Modal>
-      {/* </SafeAreaView> */}
+
+          <Pressable
+            style={[modalStyles.button, modalStyles.buttonSubmit]}
+            onPress={handleCloseCreateMatchForm}
+          >
+            <Text style={modalStyles.textStyle}>Start Matching!</Text>
+          </Pressable>
+
+          <Pressable
+            style={[modalStyles.button, modalStyles.buttonClose]}
+            onPress={handleCloseCreateMatchForm}
+          >
+            <Text style={modalStyles.textStyle}>Cancel!</Text>
+          </Pressable>
+        </View>
+      </Modal>
     </>
   )
-}
+})
+
+export default CreateMatchPage;
 
 const localStyles = StyleSheet.create({
   mapView: {
@@ -394,6 +390,9 @@ const localStyles = StyleSheet.create({
     borderColor: ZOMP,
   },
   iconButtonIcon: {
+    backgroundColor: ZOMP,
+  },
+  createButton: {
     backgroundColor: ZOMP,
   },
   rectangleSelectionContainer: {

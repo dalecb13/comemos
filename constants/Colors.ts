@@ -20,6 +20,7 @@ export const CCCCCC = 'rgb(204, 204, 204)';
 export const DDDDDD = 'rgb(221, 221, 221)';
 export const EEEEEE = 'rgb(238, 238, 238)';
 export const OFFWHITE = 'rgb(250, 249, 246)';
+export const CLEAR = 'rgba(0, 0, 0, 0)';
 
 export const PRIMARY_COLOR = ZOMP;
 export const PRIMARY_COLOR_ACTIONS = REDWOOD;
