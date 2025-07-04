@@ -4,8 +4,11 @@ import { Computed, Memo, observer } from "@legendapp/state/react";
 import { games$ as _games$, createGame } from '@/store/games.store';
 import { PRIMARY_COLOR_ACTIONS, WHITE } from '@/constants/colors';
 import { supabase } from '@/lib/supabase';
+import { useRouter } from 'expo-router';
 
 const GameList = observer(({ games$ }: { games$: typeof _games$ }) => {
+  const router = useRouter();
+
   const handleCreateGame = async () => {
     const session = await supabase.auth.getSession();
     if (session.data.session) {
@@ -33,12 +36,23 @@ const GameList = observer(({ games$ }: { games$: typeof _games$ }) => {
     .keys(games)
     .filter((key) => games[key].status === 'inactive');
 
+  const onPressFunction = (gameId: string) => {
+    router.navigate({
+      pathname: '/(root)/(tabs)/games/[gameId]',
+      params: { gameId }
+    });
+  }
+
   return <>
     <Text>Active Games</Text>
 
     <View>
       {
-        activeMatches.map((matchId) => <Text key={matchId}>{matchId}</Text>)
+        activeMatches.map((gameId) => {
+          return <Pressable onPress={() => onPressFunction(gameId)} key={gameId}>
+            <Text key={gameId}>{gameId}</Text>
+          </Pressable>
+        })
       }
     </View>
 
