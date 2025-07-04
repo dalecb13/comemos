@@ -33,4 +33,7 @@ create policy "Enable update by authenticated users."
   on "public"."match_games"
   as PERMISSIVE
   for update
-  to authenticated;
+  to authenticated
+  with check (
+    (select auth.uid()) = creator_id
+  );

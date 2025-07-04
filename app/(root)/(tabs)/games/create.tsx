@@ -1,122 +1,40 @@
-import CountryApi from "@/api/country.api";
-import GameApi from "@/api/game.api";
-import RestaurantApi from "@/api/restaurant.api";
 import { AAAAAA, ASH_GRAY, ASH_GRAY_TRANSPARENT, BACKDROP_COLOR, CCCCCC, CLEAR, REDWOOD, ZOMP } from "@/constants/colors";
-import { calculateRegion } from "@/lib/location";
 import globalStyles from "@/lib/styles";
-import { CountryModel } from "@/models/country.model";
-import { CreateGameModel } from "@/models/create-game.model";
+import { userLocation$ } from "@/store/location.store";
 import { DRAW_STATE, mapDraw$ } from "@/store/map-draw.state";
-import { useLocationStore } from "@/store/use-location-store";
 import { FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { observer } from "@legendapp/state/react";
-import { useLocales } from "expo-localization";
-import React, { useEffect, useRef, useState } from "react";
-import { Modal, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
-import MapView, { LatLng, LongPressEvent, Polygon, PROVIDER_DEFAULT } from "react-native-maps";
-// import { CityModel, CountryModel } from "../../../../models/location.model";
-// import { getCities, getCountries } from "../../../../api/location.api";
-// import { FriendModel } from "models/friend.model";
-// import { useLocationStore } from "store/location";
-// import { calculateRegion } from "lib/location";
-// import { getLocales } from "react-native-localize";
-// import { getLangNameFromCode } from "language-name-map";
-// import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
-import RNPickerSelect from 'react-native-picker-select';
-
-// import { CreateGameModel, createMatch } from "api/match.api";
+import React, { useRef, useState } from "react";
+import { Pressable, StyleSheet, View } from "react-native";
+import MapView, { Details, LatLng, LongPressEvent, Polygon, PROVIDER_DEFAULT, Region } from "react-native-maps";
 import { SafeAreaView } from 'react-native-safe-area-context';
-// import globalStyles from "lib/styles";
-// import MapView, { LatLng, LongPressEvent, PROVIDER_DEFAULT } from 'react-native-maps';
-// import { AAAAAA, ASH_GRAY, BACKDROP_COLOR, PRIMARY_COLOR, ZOMP } from 'constants/colors';
-// import { getRestaurants } from "api/restaurant.api";
-
-type PickerOption = {
-  label: string;
-  value: string;
-}
-
-type CountryPickerOption = CountryModel & PickerOption;
+import { createGameId$ } from "@/store/create-game.store";
+import { useRouter } from "expo-router";
+import { startGame } from "@/store/games.store";
 
 const CreateMatchPage = observer(() => {
   const drawState = mapDraw$.get();
+  const userLocation = userLocation$.get();
+  const gameId = createGameId$.get();
+  const mapRef = useRef<MapView>(null);
+  const router = useRouter();
 
   console.log('[CreateMatchPage]');
-  const locales = useLocales();
-  const mapRef = useRef<MapView>(null);
-  const [ showMatchForm, setShowMatchForm ] = useState<boolean>(false);
-  const {
-    userLongitude,
-    userLatitude,
-  } = useLocationStore();
-  const [ region, setRegion ] = useState(calculateRegion({
-    userLatitude,
-    userLongitude,
-  }));
-
-  const handleOpenCreateMatchForm = () => {
-    setShowMatchForm(true);
-  }
 
   const [ boundingPolygon, setBoundingPolygon ] = useState<LatLng[]>([]);
 
-  const [ countries, setCountries ] = useState<CountryPickerOption[]>([]);
-  const [isCountriesFocus, setIsCountriesFocus] = useState(false);
-  // const [ cities, setCities ] = useState<CityModel[]>([]);
-  const [isCitiesFocus, setIsCitiesFocus] = useState(false);
-  // const [ friends, setFriends ] = useState<FriendModel[]>([]);
-  const [isFriendsFocus, setIsFriendsFocus] = useState(false);
-
-  const [ address, setAddress ] = useState<string>('');
-  const [ chosenCountry, setChosenCountry ] = useState<string>('');
-  const [ chosenCountryId, setChosenCountryId ] = useState<number>();
-  const [ chosenCity, setChosenCity ] = useState<string>('');
-  const [ chosenCityId, setChosenCityId] = useState<number>();
-  const [ budget, setBudget ] = useState<number>(1);
-
-  useEffect(() => {
-    const fetchCountries = async () => {
-      const fetchedCountries: CountryModel[] = await CountryApi.getCountriesPicker();
-    }
-    fetchCountries();
-  }, []);
-
-  const handleChangeCountry = (thing: any) => {
-    setChosenCountryId(thing.id);
-    setIsCountriesFocus(false);
-  }
-
-  const handleChangeCity = (thing: any) => {
-    setChosenCityId(thing.id);
-    setChosenCity(thing.value);
-    setIsCitiesFocus(false);
-  }
-
-  // useEffect(() => {
-  //   const fetchCities = async (countryId: number) => {
-  //     const fetchedCities: CityModel[] = await getCities(countryId);
-  //     setCities(fetchedCities);
-  //   }
-  //   if (chosenCountryId) {
-  //     fetchCities(chosenCountryId);
-  //   }
-  // }, [chosenCountryId]);
-
-  const handleCloseCreateMatchForm = async () => {
-    // const languageCode = getLocales()[0].languageCode;
-    // const languageName = getLangNameFromCode(languageCode)!.native;
-
-    const createGameModel: CreateGameModel = {
-      address,
-      country: chosenCountry,
-      city: chosenCity,
-      budget,
-      categories: ['Korean'],
-      // locale: languageName,
-    }
-
-    const data = await GameApi.createGame(createGameModel);
-    setShowMatchForm(false);
+  const handleChangeLocation = (region: Region, details: Details) => {
+    console.log('[CreateMatchPage.handleChangeLocation] region', region);
+    console.log('[CreateMatchPage.handleChangeLocation] details', details);
+    // const updatedRegion = calculateRegion({
+    //   userLatitude,
+    //   userLongitude,
+    // });
+    // userLocation$.set({
+    //   userLatitude: updatedRegion.latitude,
+    //   userLongitude: updatedRegion.longitude,
+    //   userAddress: '',
+    // });
   }
 
   const handleLongPress = (longPressEvent: LongPressEvent) => {
@@ -129,32 +47,30 @@ const CreateMatchPage = observer(() => {
     }
   }
 
-  const handleFetchRestaurants = async () => {
-    console.log(region);
-    const centerLat = region.latitude + region.latitudeDelta / 2;
-    const centerLong = region.longitude + region.longitudeDelta / 2;
-    console.log('center coordinates', centerLat, centerLong);
-    const approxAddress = await mapRef.current!.addressForCoordinate({
-      latitude: centerLat,
-      longitude: centerLong,
-    });
-    console.log('address', approxAddress);
-    const compositeAddress = `${approxAddress.name}, ${approxAddress.administrativeArea}, ${approxAddress.country}`;
-
-    // const locales = getLocales();
-    // console.log('locales', locales);
-    // const languageCode = getLocales()[0].languageCode;
-    // console.log('languageCode', languageCode);
-
-    // const locale = `${languageCode}-${approxAddress.countryCode}`;
-    // console.log('locale', locale);
-    const locale = locales[0];
-
-    await RestaurantApi.getRestaurants(region, compositeAddress, locale);
-  }
-
   const handleChangeDrawState = (drawState: DRAW_STATE) => {
     mapDraw$.set(drawState);
+  }
+
+  const handleStartGame = async () => {
+    if (drawState === 'polygon') {
+      await startGame(gameId, {
+        region: boundingPolygon,
+        regionType: 'polygon',
+      });
+
+      // const navigationDestination = `/(root)/(tabs)/games/${gameId}`;
+      // router.navigate('/(root)/(tabs)/games', { id: gameId });
+    } else {
+      await startGame(gameId, {
+        region: {
+          latitude: userLocation.region.latitude,
+          longitude: userLocation.region.longitude,
+          latitudeDelta: userLocation.region.latitudeDelta,
+          longitudeDelta: userLocation.region.longitudeDelta,
+        },
+        regionType: 'rectangular',
+      });
+    }
   }
 
   return (
@@ -167,8 +83,8 @@ const CreateMatchPage = observer(() => {
           tintColor="black"
           mapType="mutedStandard"
           showsPointsOfInterest={false}
-          initialRegion={region}
-          onRegionChange={setRegion}
+          initialRegion={userLocation.region}
+          onRegionChange={handleChangeLocation}
           showsUserLocation={false}
           userInterfaceStyle="light"
           zoomEnabled={true}
@@ -192,7 +108,7 @@ const CreateMatchPage = observer(() => {
               <Ionicons name="pencil" size={24} />
             </View>
           </Pressable>
-          <Pressable onPress={() => handleOpenCreateMatchForm()}>
+          <Pressable onPress={() => handleStartGame()}>
             <View style={[ localStyles.circleButton, localStyles.createButton ]}>
               <FontAwesome6 name="plus" size={24} />
             </View>
@@ -204,136 +120,6 @@ const CreateMatchPage = observer(() => {
           </View>
         }
       </SafeAreaView>
-      <Modal
-        animationType="slide"
-        transparent={false}
-        visible={showMatchForm}
-        onRequestClose={() => setShowMatchForm(false)}
-        onDismiss={() => setShowMatchForm(false)}
-      >
-        <View>
-          <Pressable>
-            {/* <FontAwesome6 name="x" iconStyle="solid" /> */}
-            <Ionicons name="close-outline" />
-          </Pressable>
-        </View>
-        <View style={modalStyles.modalView}>
-          <Text>Match Settings</Text>
-
-          <RNPickerSelect
-            items={countries}
-            onValueChange={handleChangeCountry}
-          />
-
-          {/* <Dropdown
-            style={[modalStyles.dropdown, isCountriesFocus && { borderColor: 'blue' }]}
-            placeholderStyle={modalStyles.placeholderStyle}
-            selectedTextStyle={modalStyles.selectedTextStyle}
-            inputSearchStyle={modalStyles.inputSearchStyle}
-            iconStyle={modalStyles.iconStyle}
-            data={countries}
-            search
-            maxHeight={300}
-            labelField="countryName"
-            valueField="id"
-            placeholder={!isCountriesFocus ? 'Country' : '...'}
-            searchPlaceholder="Search"
-            value={chosenCountryId}
-            onFocus={() => setIsCountriesFocus(true)}
-            onBlur={() => setIsCountriesFocus(false)}
-            onChange={handleChangeCountry}
-          /> */}
-
-          {/* {
-            chosenCountryId
-              ? <Dropdown
-                  style={[modalStyles.dropdown, isCitiesFocus && { borderColor: 'blue' }]}
-                  placeholderStyle={modalStyles.placeholderStyle}
-                  selectedTextStyle={modalStyles.selectedTextStyle}
-                  inputSearchStyle={modalStyles.inputSearchStyle}
-                  iconStyle={modalStyles.iconStyle}
-                  data={cities}
-                  search
-                  maxHeight={300}
-                  labelField="cityName"
-                  valueField="id"
-                  placeholder={!isCitiesFocus ? 'City' : '...'}
-                  searchPlaceholder="Search"
-                  value={chosenCityId}
-                  onFocus={() => setIsCitiesFocus(true)}
-                  onBlur={() => setIsCitiesFocus(false)}
-                  onChange={handleChangeCity}
-                />
-              : <Dropdown
-                  style={[modalStyles.dropdown, isCitiesFocus && { borderColor: 'blue' }]}
-                  placeholderStyle={modalStyles.placeholderStyle}
-                  selectedTextStyle={modalStyles.selectedTextStyle}
-                  inputSearchStyle={modalStyles.inputSearchStyle}
-                  iconStyle={modalStyles.iconStyle}
-                  data={cities}
-                  search
-                  maxHeight={300}
-                  labelField="cityName"
-                  valueField="id"
-                  placeholder={!isCitiesFocus ? 'City' : '...'}
-                  searchPlaceholder="Search"
-                  value={chosenCityId}
-                  onFocus={() => setIsCitiesFocus(true)}
-                  onBlur={() => setIsCitiesFocus(false)}
-                  onChange={handleChangeCity}
-                />
-          } */}
-
-          <View style={localStyles.textInputStyle}>
-            <TextInput
-              placeholder='Address'
-              value={address}
-              onChangeText={setAddress}
-            />
-          </View>
-
-          <View style={localStyles.buttonGroup}>
-            <Pressable
-              style={[localStyles.buttonGroupButton, localStyles.buttonGroupButtonLeft, budget === 1 ? localStyles.buttonGroupButtonChosen : null]}
-              onPress={() => setBudget(1)}
-            >
-              <Text style={localStyles.buttonText}>$</Text>
-            </Pressable>
-            <Pressable
-              style={[localStyles.buttonGroupButton, localStyles.buttonGroupButtonMiddle, budget === 2 ? localStyles.buttonGroupButtonChosen : null]}
-              onPress={() => setBudget(2)}
-            >
-              <Text style={localStyles.buttonText}>$$</Text>
-            </Pressable>
-            <Pressable
-              style={[localStyles.buttonGroupButton, localStyles.buttonGroupButtonMiddle, budget === 3 ? localStyles.buttonGroupButtonChosen : null]}
-              onPress={() => setBudget(3)}
-            >
-              <Text style={localStyles.buttonText}>$$$</Text>
-            </Pressable>
-            <Pressable
-              style={[localStyles.buttonGroupButton, localStyles.buttonGroupButtonRight, budget === 4 ? localStyles.buttonGroupButtonChosen : null]}
-              onPress={() => setBudget(4)}
-            >
-              <Text style={localStyles.buttonText}>$$$$</Text>
-            </Pressable>
-          </View>
-
-          <Pressable
-            style={[modalStyles.button, modalStyles.buttonSubmit]}
-            onPress={handleCloseCreateMatchForm}
-          >
-            <Text style={modalStyles.textStyle}>Start Matching!</Text>
-          </Pressable>
-
-          <Pressable
-            style={[modalStyles.button, modalStyles.buttonClose]}
-            onPress={handleCloseCreateMatchForm}
-          >
-            <Text style={modalStyles.textStyle}>Cancel!</Text>
-          </Pressable>
-        </View>
-      </Modal>
     </>
   )
 })

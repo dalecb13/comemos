@@ -1,101 +1,8 @@
-export type Json =
-  | string
-  | number
-  | boolean
-  | null
-  | { [key: string]: Json | undefined }
-  | Json[]
+export type Json = Record<string, any>
 
 export type Database = {
-  graphql_public: {
-    Tables: {
-      [_ in never]: never
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      graphql: {
-        Args: {
-          operationName?: string
-          query?: string
-          variables?: Json
-          extensions?: Json
-        }
-        Returns: Json
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
-  }
   public: {
     Tables: {
-      cities: {
-        Row: {
-          citycoords: unknown
-          cityname: string | null
-          countryid: number | null
-          createdat: string | null
-          id: number
-        }
-        Insert: {
-          citycoords: unknown
-          cityname?: string | null
-          countryid?: number | null
-          createdat?: string | null
-          id?: never
-        }
-        Update: {
-          citycoords?: unknown
-          cityname?: string | null
-          countryid?: number | null
-          createdat?: string | null
-          id?: never
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fk_cities"
-            columns: ["countryid"]
-            isOneToOne: false
-            referencedRelation: "countries"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      countries: {
-        Row: {
-          capitalname: string | null
-          countryiso2: string | null
-          countryiso3: string | null
-          countryname: string | null
-          createdat: string | null
-          id: number
-          ueid: number | null
-        }
-        Insert: {
-          capitalname?: string | null
-          countryiso2?: string | null
-          countryiso3?: string | null
-          countryname?: string | null
-          createdat?: string | null
-          id?: never
-          ueid?: number | null
-        }
-        Update: {
-          capitalname?: string | null
-          countryiso2?: string | null
-          countryiso3?: string | null
-          countryname?: string | null
-          createdat?: string | null
-          id?: never
-          ueid?: number | null
-        }
-        Relationships: []
-      }
       groups: {
         Row: {
           created_at: string | null
@@ -134,6 +41,93 @@ export type Database = {
           },
         ]
       }
+      match_game_restaurants: {
+        Row: {
+          createdat: string | null
+          deletedat: boolean | null
+          id: string
+          matchgameid: string
+          restaurantid: string
+          updatedat: string | null
+        }
+        Insert: {
+          createdat?: string | null
+          deletedat?: boolean | null
+          id?: string
+          matchgameid: string
+          restaurantid: string
+          updatedat?: string | null
+        }
+        Update: {
+          createdat?: string | null
+          deletedat?: boolean | null
+          id?: string
+          matchgameid?: string
+          restaurantid?: string
+          updatedat?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "match_game_restaurants_matchgameid_fkey"
+            columns: ["matchgameid"]
+            isOneToOne: false
+            referencedRelation: "match_games"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "match_game_restaurants_restaurantid_fkey"
+            columns: ["restaurantid"]
+            isOneToOne: false
+            referencedRelation: "restaurants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      match_game_restaurants_votes: {
+        Row: {
+          createdat: string | null
+          deletedat: boolean | null
+          id: string
+          matchgamerestaurantid: string
+          profileid: string
+          updatedat: string | null
+          votestatus: Database["public"]["Enums"]["vote_status"] | null
+        }
+        Insert: {
+          createdat?: string | null
+          deletedat?: boolean | null
+          id?: string
+          matchgamerestaurantid: string
+          profileid: string
+          updatedat?: string | null
+          votestatus?: Database["public"]["Enums"]["vote_status"] | null
+        }
+        Update: {
+          createdat?: string | null
+          deletedat?: boolean | null
+          id?: string
+          matchgamerestaurantid?: string
+          profileid?: string
+          updatedat?: string | null
+          votestatus?: Database["public"]["Enums"]["vote_status"] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "match_game_restaurants_votes_matchgamerestaurantid_fkey"
+            columns: ["matchgamerestaurantid"]
+            isOneToOne: false
+            referencedRelation: "match_game_restaurants"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "match_game_restaurants_votes_profileid_fkey"
+            columns: ["profileid"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       match_games: {
         Row: {
           budget: number | null
@@ -147,6 +141,8 @@ export type Database = {
           id: string
           locale: string | null
           search_address: string | null
+          search_region: Json | null
+          status: Database["public"]["Enums"]["match_game_status"]
           updated_at: string | null
         }
         Insert: {
@@ -161,6 +157,8 @@ export type Database = {
           id?: string
           locale?: string | null
           search_address?: string | null
+          search_region?: Json | null
+          status?: Database["public"]["Enums"]["match_game_status"]
           updated_at?: string | null
         }
         Update: {
@@ -175,6 +173,8 @@ export type Database = {
           id?: string
           locale?: string | null
           search_address?: string | null
+          search_region?: Json | null
+          status?: Database["public"]["Enums"]["match_game_status"]
           updated_at?: string | null
         }
         Relationships: [
@@ -227,15 +227,60 @@ export type Database = {
         }
         Relationships: []
       }
+      restaurants: {
+        Row: {
+          createdat: string | null
+          deletedat: boolean | null
+          id: string
+          restaurantcoords: unknown
+          restaurantdetails: Json | null
+          restaurantname: string | null
+          updatedat: string | null
+        }
+        Insert: {
+          createdat?: string | null
+          deletedat?: boolean | null
+          id?: string
+          restaurantcoords: unknown
+          restaurantdetails?: Json | null
+          restaurantname?: string | null
+          updatedat?: string | null
+        }
+        Update: {
+          createdat?: string | null
+          deletedat?: boolean | null
+          id?: string
+          restaurantcoords?: unknown
+          restaurantdetails?: Json | null
+          restaurantname?: string | null
+          updatedat?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      restaurants_in_box: {
+        Args: {
+          min_lat: number
+          min_long: number
+          max_lat: number
+          max_long: number
+        }
+        Returns: {
+          id: string
+          restaurantname: string
+          restaurantdetails: Json
+          lat: number
+          long: number
+        }[]
+      }
     }
     Enums: {
-      [_ in never]: never
+      match_game_status: "created" | "started" | "ended" | "inactive"
+      vote_status: "liked" | "disliked" | "not_voted"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -349,11 +394,11 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
-  graphql_public: {
-    Enums: {},
-  },
   public: {
-    Enums: {},
+    Enums: {
+      match_game_status: ["created", "started", "ended", "inactive"],
+      vote_status: ["liked", "disliked", "not_voted"],
+    },
   },
 } as const
 
