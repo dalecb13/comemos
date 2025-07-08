@@ -47,6 +47,11 @@ export function createGame(creator_id: string) {
   router.navigate('/(root)/(tabs)/games/create');
 }
 
+export function getGameById(game_id: string) {
+  console.log('[games.store.getGameById]', game_id);
+  return games$[game_id];
+}
+
 export function startGame(game_id: string, search_region: SearchRegion) {
   console.log('[games.store.startGame]', game_id, search_region);
   // Add keyed by id to the todos$ observable to trigger a create in Supabase
@@ -55,5 +60,8 @@ export function startGame(game_id: string, search_region: SearchRegion) {
     status: 'started',
   });
 
-  router.navigate('/(root)/(tabs)/games/game/', { id: game_id });
+  router.navigate({
+    pathname: '/(root)/(tabs)/games/[gameId]',
+    params: { gameId: game_id }
+  });
 }
