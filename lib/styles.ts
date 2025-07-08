@@ -26,6 +26,12 @@ const globalStyles = StyleSheet.create({
   primaryButton: {
     padding: 16,
     borderRadius: 8,
+    backgroundColor: PRIMARY_COLOR,
+    color: WHITE,
+  },
+  primaryActionButton: {
+    padding: 16,
+    borderRadius: 8,
     backgroundColor: PRIMARY_COLOR_ACTIONS,
     color: WHITE,
   },

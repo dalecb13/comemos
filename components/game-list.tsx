@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import { Computed, Memo, observer } from "@legendapp/state/react";
+import { observer } from "@legendapp/state/react";
 import { games$ as _games$, createGame } from '@/store/games.store';
 import { PRIMARY_COLOR_ACTIONS, WHITE } from '@/constants/colors';
 import { supabase } from '@/lib/supabase';
