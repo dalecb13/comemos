@@ -14,35 +14,33 @@ export default function Page() {
   }
 
   return (
-    <SafeAreaView style={globalStyles.safeAreaStyle}>
-      <View style={localStyles.mainView}>
-        <Text style={globalStyles.title}>Welcome Back!</Text>
-        <TextInput
-          style={globalStyles.input}
-          autoCapitalize="none"
-          value={email}
-          placeholder="Enter email"
-          onChangeText={(emailAddress) => setEmail(emailAddress)}
-        />
-        <TextInput
-          style={globalStyles.input}
-          value={password}
-          placeholder="Enter password"
-          secureTextEntry={true}
-          onChangeText={(password) => setPassword(password)}
-        />
-        <Button title="Sign in" onPress={onSignInPress} />
-        <View style={localStyles.signUpView}>
-          <Text>Don't have an account?</Text>
-          <Link
-            style={globalStyles.link}
-            href="/sign-up"
-          >
-            <Text>Sign up</Text>
-          </Link>
-        </View>
+    <View style={localStyles.mainView}>
+      <Text style={globalStyles.title}>Welcome Back!</Text>
+      <TextInput
+        style={globalStyles.input}
+        autoCapitalize="none"
+        value={email}
+        placeholder="Enter email"
+        onChangeText={(emailAddress) => setEmail(emailAddress)}
+      />
+      <TextInput
+        style={globalStyles.input}
+        value={password}
+        placeholder="Enter password"
+        secureTextEntry={true}
+        onChangeText={(password) => setPassword(password)}
+      />
+      <Button title="Sign in" onPress={onSignInPress} />
+      <View style={localStyles.signUpView}>
+        <Text>Don't have an account?</Text>
+        <Link
+          style={globalStyles.link}
+          href="/sign-up"
+        >
+          <Text>Sign up</Text>
+        </Link>
       </View>
-    </SafeAreaView>
+    </View>
   )
 }
 

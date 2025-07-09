@@ -1,8 +1,7 @@
-import globalStyles from "@/lib/styles";
 import { observer } from "@legendapp/state/react";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect } from "react";
-import { SafeAreaView, Text } from "react-native";
+import { Text } from "react-native";
 import { games$ as _games$ } from '@/store/games.store';
 
 const GamePage = observer(({ games$ }: { games$: typeof _games$ }) => {
@@ -20,9 +19,7 @@ const GamePage = observer(({ games$ }: { games$: typeof _games$ }) => {
   }, [gameId]);
 
   return (
-    <SafeAreaView style={globalStyles.safeAreaStyle}>
-      <Text>Game Page for Game {gameId}</Text>
-    </SafeAreaView>
+    <Text>Game Page for Game {gameId}</Text>
   )
 });
 

@@ -1,26 +1,21 @@
 import React from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import globalStyles from '@/lib/styles';
 import GameList from '@/components/game-list';
 import { games$ as _games$ } from '@/store/games.store';
 
-import { Pressable, StyleSheet, Text } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useRouter } from 'expo-router';
 import { PRIMARY_COLOR } from '@/constants/colors';
 
 export default function GameHome() {
   const router = useRouter();
 
-  const onCreateGamePress = () => {
-    router.navigate('/(root)/(tabs)/games/create');
-  }
-
   return (
-    <SafeAreaView style={globalStyles.safeAreaStyle}>
+    <View style={localStyles.gameHomeView}>
       <GameList games$={_games$} />
       <Pressable
-        onPress={onCreateGamePress}
+        onPress={() => router.navigate('/(root)/(tabs)/games/create')}
         style={({pressed}) => [
         {
           backgroundColor: pressed ? PRIMARY_COLOR : 'white',
@@ -30,10 +25,19 @@ export default function GameHome() {
       >
         <Text>Create Game</Text>
       </Pressable>
-    </SafeAreaView>
+    </View>
   )
 }
 
 const localStyles = StyleSheet.create({
-
+  gameHomeView: {
+    height: '100%',
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 16,
+    padding: 16,
+  }
 });
