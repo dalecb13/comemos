@@ -14,7 +14,13 @@ export default function SignUpScreen() {
   const [confirmPassword, setConfirmPassword] = React.useState('');
 
   const onSignUpPress = async () => {
-    await AuthApi.signUp(email, password);
+    try {
+      const data = await AuthApi.signUp(email, password);
+      console.log('signUp data', data);
+      router.replace("/(auth)/sign-in");
+    } catch (error) {
+      console.warn(error);
+    }
   }
 
   return (

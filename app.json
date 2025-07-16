@@ -14,7 +14,19 @@
         "usesNonExemptEncryption": false
       },
       "bundleIdentifier": "com.dalechang.comemos",
-      "usesAppleSignIn": true
+      "usesAppleSignIn": false,
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true,
+          "NSExceptionDomains": {
+            "supabase.co": {
+              "NSExceptionAllowsInsecureHTTPLoads": true,
+              "NSIncludesSubdomains": true
+            }
+          }
+        }
+      }
     },
     "android": {
       "adaptiveIcon": {

@@ -105,7 +105,7 @@ const CreateWithoutGroup = () => {
   const handleStart = () => {
     console.log('handleStart');
     console.log('chosenCategories', chosenCategories);
-    console.log('budget', budget);
+    console.log('budget', budget.label);
     console.log('boundingPolygon', boundingPolygon);
   }
 

@@ -1,9 +1,8 @@
 import { supabase } from "@/lib/supabase";
-import { router } from "expo-router";
 
 const AuthApi = {
   signUp: async (email: string, password: string) => {
-    const { error } = await supabase
+    const { data, error } = await supabase
       .auth
       .signUp({
         email,
@@ -11,10 +10,9 @@ const AuthApi = {
       });
 
     if (error) {
-      alert("Error signing up: " + error.message);
+      throw error;
     } else {
-      alert("Sign-up successful! Please sign in.");
-      router.replace("/(auth)/sign-in");
+      return data;
     }
   },
 
@@ -27,7 +25,7 @@ const AuthApi = {
       console.warn('Error signing in', error)
       alert("Error signing in: " + error.message);
     } else {
-      // router.replace("/(root)/(tabs)/games");
+      console.log('Sign in data', data)
     }
 
     return data;

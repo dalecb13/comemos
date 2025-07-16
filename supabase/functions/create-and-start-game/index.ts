@@ -3,7 +3,7 @@
 // This enables autocomplete, go to definition, etc.
 
 // Setup type definitions for built-in Supabase Runtime APIs
-import "jsr:@supabase/functions-js/edge-runtime.d.ts"
+import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient, SupabaseClient } from 'jsr:@supabase/supabase-js@2'
 import mockUesResponse from './ues_response_en_es.json' with { type: "json" };
 
@@ -106,6 +106,7 @@ Deno.serve(async (req) => {
   }
 
   const gameId = data[0].id;
+  console.log('created game with id', gameId);
 
   try {
     const restaurants = await findInternalRestaurants(supabaseClient, searchRegion);
@@ -136,7 +137,7 @@ Deno.serve(async (req) => {
   1. Run `supabase start` (see: https://supabase.com/docs/reference/cli/supabase-start)
   2. Make an HTTP request:
 
-  curl -i --location --request POST 'http://127.0.0.1:54321/functions/v1/start-game' \
+  curl -i --location --request POST 'http://127.0.0.1:54321/functions/v1/create-and-start-game' \
     --header 'Content-Type: application/json' \
     --data '{"name":"Functions"}'
 
