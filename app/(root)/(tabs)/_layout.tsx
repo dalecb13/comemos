@@ -8,13 +8,13 @@ export default function TabLayout() {
   return (
     <Tabs screenOptions={{ tabBarActiveTintColor: PRIMARY_COLOR_ACTIONS }}>
       <Tabs.Screen
-        name="games/index"
+        name="games"
         options={{
           title: 'Games',
           tabBarIcon: ({ color }) => <FontAwesome6 name="gamepad" size={ICON_SIZE} color={color} />,
         }}
       />
-      <Tabs.Screen
+      {/* <Tabs.Screen
         name="games/create"
         options={{
           href: null,
@@ -22,6 +22,14 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <FontAwesome6 name="gamepad" size={ICON_SIZE} color={color} />,
         }}
       />
+      <Tabs.Screen
+        name="games/[id]"
+        options={{
+          href: null,
+          title: 'Games',
+          tabBarIcon: ({ color }) => <FontAwesome6 name="gamepad" size={ICON_SIZE} color={color} />,
+        }}
+      /> */}
       <Tabs.Screen
         name="groups/index"
         options={{

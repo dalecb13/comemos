@@ -3,7 +3,7 @@ import { useSession } from "@/contexts/auth.context";
 import globalStyles from "@/lib/styles";
 import { addGroup } from "@/store/groups.store";
 import React from "react";
-import { Pressable, SafeAreaView, StyleSheet, Text, TextInput, View } from "react-native";
+import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
 export default function CreateGroupPage() {
   const { session } = useSession();
@@ -18,36 +18,34 @@ export default function CreateGroupPage() {
   }
 
   return (
-    <SafeAreaView style={globalStyles.safeAreaStyle}>
-      <View style={localStyles.mainView}>
-        <Text style={globalStyles.title}>Create Group</Text>
+    <View style={localStyles.mainView}>
+      <Text style={globalStyles.title}>Create Group</Text>
 
-        <TextInput
-          style={globalStyles.input}
-          autoCapitalize="none"
-          placeholder="Enter group name"
-          value={groupName}
-          onChangeText={(groupName) => setGroupName(groupName)}
-        />
-        <TextInput
-          editable
-          multiline
-          numberOfLines={4}
-          style={globalStyles.input}
-          autoCapitalize="none"
-          placeholder="Description"
-          value={groupDescription}
-          onChangeText={(description) => setGroupDescription(description)}
-        />
+      <TextInput
+        style={globalStyles.input}
+        autoCapitalize="none"
+        placeholder="Enter group name"
+        value={groupName}
+        onChangeText={(groupName) => setGroupName(groupName)}
+      />
+      <TextInput
+        editable
+        multiline
+        numberOfLines={4}
+        style={globalStyles.input}
+        autoCapitalize="none"
+        placeholder="Description"
+        value={groupDescription}
+        onChangeText={(description) => setGroupDescription(description)}
+      />
 
-        <Pressable
-          style={localStyles.submitButton}
-          onPress={onCreateGroupPress}
-        >
-          <Text style={localStyles.buttonText}>Create Group</Text>
-        </Pressable>
-      </View>
-    </SafeAreaView>
+      <Pressable
+        style={localStyles.submitButton}
+        onPress={onCreateGroupPress}
+      >
+        <Text style={localStyles.buttonText}>Create Group</Text>
+      </Pressable>
+    </View>
   );
 }
 

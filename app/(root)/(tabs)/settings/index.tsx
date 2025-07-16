@@ -2,7 +2,7 @@ import globalStyles from "@/lib/styles";
 import { supabase } from "@/lib/supabase";
 import { Session } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 export default function SettingsPage({ session }: { session: Session }) {
   const [loading, setLoading] = useState(true);
@@ -88,11 +88,9 @@ export default function SettingsPage({ session }: { session: Session }) {
   }
 
   return (
-    <SafeAreaView style={globalStyles.safeAreaStyle}>
-      <View style={localStyles.mainView}>
-        <Text style={globalStyles.title}>Settings</Text>
-      </View>
-    </SafeAreaView>
+    <View style={localStyles.mainView}>
+      <Text style={globalStyles.title}>Settings</Text>
+    </View>
   );
 }
 

@@ -44,3 +44,8 @@ app-example
 # Native build files for CNG
 ios
 android
+
+# Custom scripts
+scripts
+old_seeds
+
